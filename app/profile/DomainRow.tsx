@@ -1,8 +1,9 @@
 import { IconButton, TableCell, TableRow } from "@mui/material";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { CopyToClipboardButton } from "./CopyToClipboardButton";
+import { PropertyEditor } from "./PropertyEditor";
 
 export interface DomainRowProps {
   host: string;
@@ -19,14 +20,11 @@ export const DomainRow = ({ host, tld, score, deed, verified, isHeader }: Domain
       <TableCell className={`${isHeader ? 'font-bold' : ''}`}>{host}</TableCell>
       <TableCell className={`${isHeader ? 'font-bold' : ''}`}>.{tld}</TableCell>
       <TableCell className={`${isHeader ? 'font-bold' : ''}`}>{isHeader ? "Score" : score}</TableCell>
-      <TableCell className={`${isHeader ? 'font-bold' : ''}`}>
+      <TableCell className={`${isHeader ? 'font-bold' : ''} max-w-32 overflow-ellipsis`}>
         <div className="flex items-center gap-2">
           {deed}
           {
-            !isHeader && <IconButton aria-label='Copy TXT Deed'>
-              <ContentCopyIcon />
-              <span className="sr-only">Copy</span>
-            </IconButton>
+            !isHeader && <CopyToClipboardButton valueToCopy={deed} />
           }
         </div>
       </TableCell>
@@ -35,10 +33,7 @@ export const DomainRow = ({ host, tld, score, deed, verified, isHeader }: Domain
         <TableCell className="font-bold">Actions</TableCell> :
         <TableCell>
           <div className="flex items-center gap-2">
-            <IconButton aria-label='Edit this domain'> {/* TODO: make this label domain name specific */}
-              <EditIcon />
-              <span className="sr-only">Edit</span>
-            </IconButton>
+            <PropertyEditor domain={`${host}.${tld}`} verifier={deed} />
             <IconButton aria-label='Delete this domain'>
               <DeleteIcon />
               <span className="sr-only">Delete</span>

@@ -1,13 +1,18 @@
-import { Table, TableHead, TableBody, Button } from '@mui/material'
+import { Table, TableHead, TableBody } from '@mui/material'
 import { DomainRow } from './DomainRow';
+import { DomainAdder } from './DomainAdder';
+import { randomUUID } from 'crypto';
 
 export default function Profile() {
+  // TODO: Dynamically fetch these based on the currently logged-in user
   const domains = [
     { host: 'bitconquest', tld: 'com', score: 49, deed: 'h87g6f5dfw7g8', verified: true },
-    { host: 'whnvr', tld: 'com', score: 120, deed: 'uih78t6f5goj9', verified: false },
+    { host: 'whnvr', tld: 'com', score: 120, deed: 'bitconquest-property-verifier-501bc505-2b55-419f-a6cc-544f6dd38697', verified: false },
     { host: 'samhuckaby', tld: 'com', score: 77, deed: 'higftuyguigiy', verified: false },
     { host: 'lostrequiem', tld: 'com', score: 32, deed: 'ih7yt6r56f76g', verified: true },
   ];
+
+  const newUUID = randomUUID();
 
   return (
     <div key="1" className="w-full">
@@ -20,7 +25,7 @@ export default function Profile() {
         </TableBody>
       </Table>
       <div className="mt-4">
-        <Button className="mx-auto block">Add New Domain</Button>
+        <DomainAdder verifier={`bitconquest-property-verifier-${newUUID}`} />
       </div>
     </div>
   )
