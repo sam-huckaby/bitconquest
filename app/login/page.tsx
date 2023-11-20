@@ -1,14 +1,11 @@
 'use client';
 
+import { createClient } from '@/utils/supabase/client';
 import { GitHub as GitHubIcon } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { createBrowserClient } from '@supabase/ssr';
 
 export default function Login() {
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = createClient();
 
   const signInWithGithub = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
