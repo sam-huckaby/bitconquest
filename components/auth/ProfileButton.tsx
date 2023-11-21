@@ -12,6 +12,7 @@ interface ProfileButtonProps {
 
 export default function ProfileButton({ user }: ProfileButtonProps) {
 	const { push } = useRouter();
+	const supabase = createClient();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,7 +22,11 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 		setAnchorEl(null);
 	};
 
-  const supabase = createClient();
+	const goToMyDomains = async () => {
+		const { data: { user } } = await supabase.auth.getUser();
+		push(`/u/${user?.user_metadata.preferred_username}`);
+		handleClose();
+	};
 
 	const logout = async () => {
 		await supabase.auth.signOut();
@@ -66,7 +71,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 			>
 				<span className='font-bold px-4 pb-1 h-auto inline-block text-center'>{user.user_metadata.user_name}</span>
 				<Divider />
-				<MenuItem onClick={handleClose}>My Stockpile</MenuItem>
+				<MenuItem onClick={goToMyDomains}>My Domains</MenuItem>
 				<MenuItem onClick={logout}>Logout</MenuItem>
 			</Menu>
 		</>

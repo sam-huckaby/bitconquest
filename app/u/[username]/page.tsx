@@ -3,6 +3,11 @@ import { promises as dns } from 'dns';
 import whois from 'whois';
 
 import { DomainCard } from './PropertyDeed';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
+import { Button } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { DomainAddButton } from './DomainAddButton';
 
 const lookupWhois = (domain: string): Promise<any> => {
   return new Promise((resolve, reject) => {
@@ -95,19 +100,26 @@ export default async function Profile({
   params,
   searchParams,
 }: ProfileProps) {
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore);
+  const { data: { user } } = await supabase.auth.getUser();
+  console.log(user?.user_metadata.preferred_username);
   const { username } = params;
 
-  const { domain, score, txtRecords, creationDate, validated } = await (await lookup('bitconquest', 'com', 'THISISAREALLYSPECIFICVALUE')).json();
-  console.log(domain, score, txtRecords, creationDate, validated);
+  const isMyCollection = username === user?.user_metadata.preferred_username;
+
+  const { domain, score, txtRecords, creationDate, validated } = await (await lookup('bitconquest', 'com', 'bitconquest-verifier=THISISAREALLYSPECIFICVALUE')).json();
+
   return (
     <main className="w-full flex flex-col items-center">
-      <h1 className="mt-4 text-2xl font-bold sm:text-3xl md:text-4xl">Properties of {username}</h1>
+      <h1 className="mt-4 text-2xl font-bold sm:text-3xl md:text-4xl py-4">{isMyCollection ? "My domains" : `${username}'s domains`}</h1>
+      { isMyCollection && <DomainAddButton /> }
       <section className="w-full py-4">
         <div className="container grid grid-cols-3 gap-4 px-4 text-center md:gap-8 md:px-6 lg:gap-10">
-          <DomainCard domain='bitconquest' tld='com' score={score} validated={validated} />
-          <DomainCard domain='Example' tld='org' score={80} validated={false} />
-          <DomainCard domain='Example' tld='net' score={90} validated={false} />
-          <DomainCard domain='Example' tld='io' score={90} validated={false} />
+          <DomainCard domain='bitconquest' tld='com' score={score} validated={validated} ownerView={isMyCollection} />
+          <DomainCard domain='Example' tld='org' score={80} validated={false} ownerView={isMyCollection} />
+          <DomainCard domain='my-example' tld='net' score={90} validated={false} ownerView={isMyCollection} />
+          <DomainCard domain='Example' tld='io' score={90} validated={false} ownerView={isMyCollection} />
         </div>
       </section>
     </main>

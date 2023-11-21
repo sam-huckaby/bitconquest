@@ -10,16 +10,16 @@ interface HomeProps {
 export default function Home({ searchParams }: HomeProps) {
   const supabase = createClient();
 
-  if ( searchParams.code && typeof searchParams.code === 'string' ) {
+  if (searchParams.code && typeof searchParams.code === 'string') {
     supabase.auth.exchangeCodeForSession(searchParams.code);
   }
 
   const leaders = [
-  { user_name: "Big Al", stockpile_score: 4313 },
-  { user_name: "Roger That", stockpile_score: 4180 },
-  { user_name: "Spoon", stockpile_score: 3901 },
-  { user_name: "ajhks420", stockpile_score: 3512 },
-  { user_name: "undefined", stockpile_score: 3499 },
+    { user_name: "sam-huckaby", stockpile_score: 4313 },
+    { user_name: "ronvega", stockpile_score: 4180 },
+    { user_name: "spoon", stockpile_score: 3901 },
+    { user_name: "ajhks420", stockpile_score: 3512 },
+    { user_name: "undefined", stockpile_score: 3499 },
   ];
 
   return (
@@ -32,10 +32,7 @@ export default function Home({ searchParams }: HomeProps) {
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         <h2 className='text-3xl bold underline'>Leaderboard</h2>
       </div>
-
-      {
-        leaders.map(({user_name, stockpile_score }) => <LeaderPanel key={user_name} user={user_name} score={stockpile_score} />)
-      }
+      <LeaderPanel leaders={leaders} />
     </main>
   )
 }
