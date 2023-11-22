@@ -1,6 +1,8 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { promises as dns } from 'dns';
 import whois from 'whois';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 
 const lookupWhois = (domain: string): Promise<any> => {
     return new Promise((resolve, reject) => {
@@ -79,6 +81,11 @@ export async function GET(
         // Calculate a completely unbiased score that will determine how awesome a domain is
         const score = Math.round(nValue(domain) + zValue(creationDate));
 
+        const cookieStore = cookies();
+        const supabase = createClient(cookieStore);
+
+        await supabase.from('domains').update({ score }).eq('hostname', domain).eq('tld', tld);
+        
         // Respond with both TXT records and registration date
         return Response.json({
             domain: fullDomain,
