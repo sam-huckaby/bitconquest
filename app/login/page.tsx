@@ -14,7 +14,6 @@ export default function Login() {
         redirectTo: `${process.env.NEXT_PUBLIC_ROOT_URL}/auth/callback`,
       },
     });
-    console.log(data, error);
   }
 
   return (

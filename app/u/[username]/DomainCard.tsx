@@ -1,71 +1,40 @@
 'use client';
 
-import { drawFromDomainName } from "@/utils/art";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { DomainDialog } from "./DomainDialog";
+import { tldToColorScheme } from "@/utils/art/coordination";
 
 export interface DomainCardProps {
   domain: string;
+  flair: string;
   ownerView: boolean;
-  score: number;
   tld: string;
-  validated: boolean;
+  verifier: string;
 };
 
-export const tldToColorScheme = (tld: string) => {
-  switch (tld) {
-    case 'com':
-      return {
-        background: 'bg-green-200/50',
-        separator: 'bg-green-500',
-        text: 'text-green-900',
-        badge: 'bg-green-100',
-      };
-    case 'org':
-      return {
-        background: 'bg-blue-200/50',
-        separator: 'bg-blue-500',
-        text: 'text-blue-900',
-        badge: 'bg-blue-100',
-      };
-    case 'net':
-      return {
-        background: 'bg-red-200/50',
-        separator: 'bg-red-500',
-        text: 'text-red-900',
-        badge: 'bg-red-100',
-      };
-    case 'io':
-      return {
-        background: 'bg-amber-200/50',
-        separator: 'bg-amber-500',
-        text: 'text-amber-900',
-        badge: 'bg-amber-100',
-      };
-    default:
-      return {
-        background: 'bg-gray-200/50',
-        separator: 'bg-gray-500',
-        text: 'text-gray-900',
-        badge: 'bg-gray-100',
-      };
-  }
-}
-
-export const DomainCard = ({ domain, ownerView, tld, score, validated }: DomainCardProps) => {
+export const DomainCard = ({ domain, flair, ownerView, tld, verifier }: DomainCardProps) => {
   const { background, separator, text, badge } = tldToColorScheme(tld);
   const [ editOpen, setEditOpen ] = useState(false);
+  const [ score, setScore ] = useState(0);
+  const [ validated, setValidated ] = useState(false);
 
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    drawFromDomainName(canvasRef, domain);
+    const lookUpDomain = async () => {
+      // Tried to use a server action and it just exploded. I'll revisit this later
+      const { score: foundScore, validated: isValid } = await (await fetch(`/api/lookup/${domain}/${tld}?key=${verifier}`)).json();
+      setScore(foundScore);
+      setValidated(isValid);
+    };
+
+    lookUpDomain();
   }, [canvasRef]);
 
   return (
-    <div className={`relative ${background} rounded-lg shadow-lg p-4 flex flex-col items-center`}>
+    <div id={`${domain}-${tld}`} className={`relative ${background} rounded-lg shadow-lg p-4 flex flex-col items-center`}>
       <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl flex items-center">
         {validated && <svg
           className=" mr-2"
@@ -84,7 +53,7 @@ export const DomainCard = ({ domain, ownerView, tld, score, validated }: DomainC
         {domain}<span className={`${text} ${badge} text-lg rounded-full ml-2 py-1 px-3 tracking-wide`}>.{tld}</span>
       </h2>
       <div className={`h-1 w-16 ${separator} mt-2 mb-4`} />
-      <canvas height={150} width={300} id={`portrait-${domain}-${tld}`} ref={canvasRef} />
+      <img className="w-[300px] h-[150px]" src={flair} />
       <div className={`h-1 w-16 ${separator} mt-2 mb-4`} />
 
       <p className="mt-4 font-bold text-zinc-500 md:text-lg lg:text-base xl:text-lg dark:text-zinc-300">Score: {score}</p>

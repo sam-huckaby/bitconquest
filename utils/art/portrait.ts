@@ -60,18 +60,16 @@ const drawDiamond = (ctx: CanvasRenderingContext2D, x: number, y: number, color:
 
 function getColorForLetter(letter: string): string {
 	const hue = (letter.toLowerCase().charCodeAt(0) - 97) * (360 / 26);
-	return `hsl(${hue}, 100%, 50%)`; // Full saturation and 50% lightness
+	return `hsl(${hue}, 97%, 45%)`; // Full saturation and 50% lightness
 }
 
 // Function to generate and draw shapes based on domain name
-export const drawFromDomainName = (canvasRef: MutableRefObject<HTMLCanvasElement | null>, domainName: string) => {
+export const drawFromDomainName = (canvas: HTMLCanvasElement, domainName: string) => {
 	// If the canvas reference is not yet initialized, escape early
-	if (!canvasRef.current) return;
+	if (!canvas) return;
 
-	// Assuming the canvas is good, create a 2d context
-	const canvas = canvasRef.current;
 	const ctx = canvas.getContext('2d');
-
+	
 	// If the context failed to initialize, the canvas may be bad, abort
 	if (!ctx) return;
 
@@ -116,5 +114,7 @@ export const drawFromDomainName = (canvasRef: MutableRefObject<HTMLCanvasElement
 				break;
 		}
 	});
+
+	return canvas.toDataURL();
 }
 

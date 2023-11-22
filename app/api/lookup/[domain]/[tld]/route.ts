@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { promises as dns } from 'dns';
 import whois from 'whois';
 
@@ -33,10 +33,12 @@ const zValue = (registeredDate: string): number => {
 
 export const dynamic = 'force-dynamic' // defaults to force-static
 export async function GET(
-    _: Request,
+    request: NextRequest,
     { params }: { params: { domain: string, tld: string, } }
 ) {
-    return Response.json({ error: "oh, hello there" }, { status: 500 });
+    const searchParams = request.nextUrl.searchParams
+    const validationKey = searchParams.get('key')
+
     const { domain, tld } = params;
 
     if (typeof domain !== 'string' || typeof tld !== 'string') {
@@ -53,6 +55,13 @@ export async function GET(
             txtRecords.push(await dns.resolveTxt(fullDomain));
         } catch (e) {
             // No logging here because it will be hit a lot
+        }
+        let validated = false;
+        for (let i = 0; i < txtRecords.length; i++) {
+            if (txtRecords[i][0][0] === validationKey) {
+                validated = true;
+                break;
+            }
         }
 
         // Get WHOIS data
@@ -75,7 +84,8 @@ export async function GET(
             domain: fullDomain,
             score,
             txtRecords,
-            creationDate
+            creationDate,
+            validated
         });
     } catch (error: any) {
         return NextResponse.json({ error }, { status: 500 })

@@ -30,6 +30,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 
 	const logout = async () => {
 		await supabase.auth.signOut();
+		setAnchorEl(null);
 		push('/login');
 	};
 
