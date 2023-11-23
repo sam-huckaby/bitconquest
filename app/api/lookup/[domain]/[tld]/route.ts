@@ -38,8 +38,8 @@ export async function GET(
     request: NextRequest,
     { params }: { params: { domain: string, tld: string, } }
 ) {
-    const searchParams = request.nextUrl.searchParams
-    const validationKey = searchParams.get('key')
+    const searchParams = request.nextUrl.searchParams;
+    const validationKey = searchParams.get('key');
 
     const { domain, tld } = params;
 
@@ -76,7 +76,7 @@ export async function GET(
             result[key] = value;
         });
         // Grab the date the domain came into existence
-        const creationDate = result["Creation Date"] //.creationDate;
+        const creationDate = result["Creation Date"];
 
         // Calculate a completely unbiased score that will determine how awesome a domain is
         const score = Math.round(nValue(domain) + zValue(creationDate));

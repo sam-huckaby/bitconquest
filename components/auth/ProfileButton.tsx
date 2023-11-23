@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Divider, Menu, MenuItem } from '@mui/material';
+import { Button, Divider, IconButton, Menu, MenuItem } from '@mui/material';
 import { User } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -36,7 +36,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 
 	return (
 		<>
-			<Button
+			<IconButton
 				className='hover:bg-black/50'
 				aria-controls={open ? 'profile-menu' : undefined}
 				aria-haspopup="true"
@@ -59,7 +59,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 						<circle cx="12" cy="7" r="4" />
 					</svg>
 				</div>
-			</Button>
+			</IconButton>
 			<Menu
 				id="profile-menu"
 				anchorEl={anchorEl}

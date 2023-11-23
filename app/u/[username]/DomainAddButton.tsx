@@ -5,11 +5,15 @@ import { Add as AddIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { DomainDialog } from './DomainDialog';
 
-export const DomainAddButton = () => {
+interface DomainAddButtonProps {
+verifier: string
+};
+
+export const DomainAddButton = ({ verifier }: DomainAddButtonProps) => {
 	const [open, setOpen] = useState(false);
 
 	return <>
 		<Button className='rounded bg-gray-800 text-neutral-200 hover:bg-gray-900' onClick={() => setOpen(true)}><AddIcon />Collect</Button>
-		<DomainDialog clear={true} open={open} onClose={() => setOpen(false)} />
+		<DomainDialog clear={true} open={open} onClose={() => setOpen(false)} verifier={verifier} />
 	</>;
 };

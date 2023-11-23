@@ -3,23 +3,33 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 30, 30, 30;
   --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-end-rgb: 230, 230, 230;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 225, 225, 225;
+    --background-start-rgb: 30, 30, 30;
+    --background-end-rgb: 30, 30, 30;
   }
 }
 
 body {
+  height: 100%;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
+      to right,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.bottom-background {
+  background: linear-gradient(
+      to right,
       transparent,
       rgb(var(--background-end-rgb))
     )
@@ -62,13 +72,13 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100%;
+    width: 130%;
     height: 110%;
-    background: radial-gradient(ellipse, rgba(241, 184, 80, 0.8) 0%, transparent 50%);
+    background: radial-gradient(ellipse, rgba(241, 184, 80, 1.0) 0%, transparent 70%);
     border-radius: 50%;
     z-index: -1;
     transform: translate(-50%, -50%);
-    animation: rotate-shadow 9s infinite linear;
+    animation: rotate-shadow 8s infinite linear;
 }
 
 @keyframes rotate-shadow {
@@ -78,4 +88,18 @@ body {
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
     }
+}
+
+/* Shake animation for errors and other attention-needing items */
+@keyframes horizontal-shaking {
+ 0% { transform: translateX(0) }
+ 5% { transform: translateX(5px) }
+ 10% { transform: translateX(-5px) }
+ 15% { transform: translateX(5px) }
+ 20% { transform: translateX(0) }
+ 100% { transform: translateX(0) }
+}
+
+.attention-shake {
+  animation: horizontal-shaking 5s infinite;
 }

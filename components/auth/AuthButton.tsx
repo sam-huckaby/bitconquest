@@ -1,7 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
-import Link from 'next/link'
 import { cookies } from 'next/headers'
 import ProfileButton from './ProfileButton'
+import { Button } from '@mui/material'
+import { Login as LoginIcon } from '@mui/icons-material'
 
 export const AuthButton = async () => {
   const cookieStore = cookies()
@@ -14,12 +15,12 @@ export const AuthButton = async () => {
   return user ? (
     <ProfileButton user={user} />
   ) : (
-    <Link
+    <Button
       href="/login"
-      className="py-2 px-4 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+      className="py-2 px-4 flex flex-row justify-center items-center rounded-md no-underline text-white hover:bg-gray-800/50"
     >
-      Login
-    </Link>
+      Login<LoginIcon />
+    </Button>
   )
 }
 

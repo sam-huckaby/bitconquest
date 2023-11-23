@@ -1,5 +1,4 @@
 'use server';
-import { NextResponse } from 'next/server'
 import { promises as dns } from 'dns';
 import whois from 'whois';
 
@@ -32,7 +31,20 @@ export const zValue = (registeredDate: string): number => {
 	return Math.abs(diffInYears); // Return the aproximate 
 };
 
-export const lookup = async (domain: string, tld: string, validationKey: string) => {
+export interface lookupResponse {
+	data: {
+		domain: string;
+		score: number;
+		txtRecords: string[];
+		creationDate: string;
+		verified: boolean;
+	} | null;
+	error: any | null;
+	status: number;
+	
+};
+
+export const lookup = async (domain: string, tld: string, validationKey: string): Promise<lookupResponse> => {
 	if (typeof domain !== 'string' || typeof tld !== 'string') {
 		throw 'Invalid domain or TLD';
 	}
@@ -49,10 +61,10 @@ export const lookup = async (domain: string, tld: string, validationKey: string)
 			// No logging here because it will be hit a lot
 		}
 
-		let validated = false;
+		let verified = false;
 		for (let i = 0; i < txtRecords.length; i++) {
 			if (txtRecords[i][0][0] === validationKey) {
-				validated = true;
+				verified = true;
 				break;
 			}
 		}
@@ -73,14 +85,16 @@ export const lookup = async (domain: string, tld: string, validationKey: string)
 		const score = Math.round(nValue(domain) + zValue(creationDate));
 
 		// Respond with both TXT records and registration date
-		return Response.json({
+		return { data: {
 			domain: fullDomain,
 			score,
-			txtRecords,
+			txtRecords: txtRecords.flat(2),
 			creationDate,
-			validated,
-		});
+			verified,
+		}, error: null, status: 200 };
+
 	} catch (error: any) {
-		return NextResponse.json({ error }, { status: 500 })
+		console.log(error);
+		return { data: null, error, status: 500 };
 	}
 }

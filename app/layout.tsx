@@ -18,8 +18,8 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <header className="w-full bg-gradient-to-br from-green-600 via-green-800 to-green-700 text-white py-2 pl-8 pr-4 relative flex flex-row justify-between items-center">
+      <body className={`${inter.className} pt-[72px]`}>
+        <header className="fixed top-0 z-10 w-full bg-gradient-to-br from-green-600 via-green-800 to-green-700 text-white py-2 pl-8 pr-4 flex flex-row justify-between items-center">
           <Link href={'/'} className='text-2xl font-bold'>Bit Conquest</Link>
           <AuthButton />
         </header>
