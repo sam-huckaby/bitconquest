@@ -88,9 +88,7 @@ export async function GET(
         
         // Respond with both TXT records and registration date
         return Response.json({
-            domain: fullDomain,
             score,
-            txtRecords,
             creationDate,
             validated
         });
