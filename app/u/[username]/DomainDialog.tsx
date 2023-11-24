@@ -50,7 +50,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
     flairCanvas.height = 150;
     // This lookup is to populate the score, which isn't shown in this dialog, but needs to be populated when it closes
     const { data, error: lookupError } = await lookup(hostname, tld, verifier); // This function returns an object with the score if needed here later
-console.log(data);
+
     const flair = drawFromDomainName(flairCanvas, hostname);
     setFlairImg(flair);
     const { error } = await supabase.from('domains').insert([
@@ -93,7 +93,7 @@ console.log(data);
   return (
     <Dialog classes={{
       'root': showVeil ? 'glamour-modal' : '',
-    }} maxWidth='xs' open={open} onKeyUp={(e) => e.key === 'Enter' ? collectHandler() : true} onSubmit={collectHandler} disableRestoreFocus onClose={closeHandler}>
+    }} maxWidth='xs' open={open} onKeyUp={(e) => (e.key === 'Enter' && isUrlValid) ? collectHandler() : true} onSubmit={collectHandler} disableRestoreFocus onClose={closeHandler}>
       {
         existingDomain ?
           <DialogTitle className='pb-0'>{url}</DialogTitle> :

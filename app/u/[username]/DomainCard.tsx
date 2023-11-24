@@ -26,7 +26,7 @@ export const DomainCard = ({ domain, flair, ownerView, score, tld, verified, ver
     // On each page load, check to see if the domain is verified?
     const lookUpDomain = async () => {
       // Tried to use a server action and it just exploded. I'll revisit this later
-      const { validated: isValid } = await (await fetch(`/api/lookup/${domain}/${tld}?key=${verifier}`)).json();
+      const { validated: isValid } = await (await fetch(`/api/lookup/${domain}/${tld}?key=${verifier}`, { next: { revalidate: 15 } })).json();
 
       // TODO: If the verified state has changed, initialize and update Supabase
       if (isValid !== verified) {

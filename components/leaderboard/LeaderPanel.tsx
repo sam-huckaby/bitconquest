@@ -27,7 +27,7 @@ export const LeaderPanel = ({ leaders }: LeaderPanelProps) => {
 					dark:bg-slate-600/50 dark:hover:bg-slate-600/75
 					text-2xl transition duration-500 cursor-pointer'>
 					<div className='py-4 pl-4'>{total_score}</div>
-					<div className='py-4 pr-4'>{nickname}</div>
+					<div className='py-4 pr-4 truncate'>{nickname}</div>
 				</div>
 			)
 			)

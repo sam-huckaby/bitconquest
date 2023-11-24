@@ -17,10 +17,10 @@ export const HomeHero = () => {
 }, []);
 
   return (
-    <div className="hero-container flex flex-row" style={{ height: `${heroHeight}px` }}>
-      <div className="bg-[length:350px_318px] w-[350px] h-[318px]" style={{ backgroundImage: 'url(whnvr-domaincard.png)' }}></div>
-      <div className="bg-[length:350px_318px] w-[350px] h-[318px]" style={{ backgroundImage: 'url(samhuckaby-domaincard.png)' }}></div>
-      <div className="bg-[length:350px_318px] w-[350px] h-[318px]" style={{ backgroundImage: 'url(bitconquest-domaincard.png)' }}></div>
+    <div className="hero-container flex flex-row justify-between w-full overflow-hidden" style={{ height: `${heroHeight}px` }}>
+      <img width={350} height={318} className="hidden sm:block absolute top-48 left-12 -rotate-12 z-[-2] shadow-md shadow-black" alt="Conquest Card for whnvr.com" src="whnvr-domaincard.png" />
+      <img width={350} height={318} className="absolute top-32 left-[calc(50%-175px)] z-[-1] shadow-md shadow-black" alt="Conquest Card for bitconquest.com" src="bitconquest-domaincard.png" />
+      <img width={350} height={318} className="hidden sm:block absolute top-48 right-12 rotate-12 z-[-2] shadow-md shadow-black" alt="Conquest Card for samhuckaby.com" src="samhuckaby-domaincard.png" />
     </div>
   );
 };

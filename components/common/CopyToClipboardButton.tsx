@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { ContentCopy as CopyIcon } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
 
-interface CopyToClipboardButtonProps {
+interface CopyToClipboardButtonProps extends IconButtonProps {
   valueToCopy: string;
 };
 
-export const CopyToClipboardButton = ({ valueToCopy }: CopyToClipboardButtonProps) => {
+export const CopyToClipboardButton = ({ valueToCopy, ...props }: CopyToClipboardButtonProps) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(valueToCopy)
       .then(() => {
@@ -20,5 +20,5 @@ export const CopyToClipboardButton = ({ valueToCopy }: CopyToClipboardButtonProp
       });
   };
 
-  return <IconButton onClick={copyToClipboard}><CopyIcon /></IconButton>;
+  return <IconButton {...props} onClick={copyToClipboard}><CopyIcon /></IconButton>;
 };

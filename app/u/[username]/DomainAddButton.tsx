@@ -13,7 +13,7 @@ export const DomainAddButton = ({ verifier }: DomainAddButtonProps) => {
 	const [open, setOpen] = useState(false);
 
 	return <>
-		<Button className='rounded bg-gray-800 text-neutral-200 hover:bg-gray-900' onClick={() => setOpen(true)}><AddIcon />Collect</Button>
+		<Button className='rounded bg-gray-700 hover:bg-gray-800 text-neutral-200' onClick={() => setOpen(true)}><AddIcon />Collect</Button>
 		<DomainDialog clear={true} open={open} onClose={() => setOpen(false)} verifier={verifier} />
 	</>;
 };
