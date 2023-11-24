@@ -1,19 +1,15 @@
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
+'use client';
+
 import ProfileButton from './ProfileButton'
 import { Button } from '@mui/material'
 import { Login as LoginIcon } from '@mui/icons-material'
+import { useAuth } from './AuthContext'
 
-export const AuthButton = async () => {
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore);
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+export const AuthButton = () => {
+  const { user } = useAuth();
+  
   return user ? (
-    <ProfileButton user={user} />
+    <ProfileButton />
   ) : (
     <Button
       href="/login"

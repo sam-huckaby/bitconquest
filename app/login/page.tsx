@@ -3,15 +3,19 @@
 import { createClient } from '@/utils/supabase/client';
 import { GitHub as GitHubIcon } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
 
 export default function Login() {
   const supabase = createClient();
+  const searchParams = useSearchParams()
+ 
+  const nextRoute = searchParams.get('next') ?? '/';
 
   const signInWithGithub = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_ROOT_URL}/auth/callback`,
+        redirectTo: `${process.env.NEXT_PUBLIC_ROOT_URL}/auth/callback?next=${encodeURIComponent(nextRoute)}`,
       },
     });
   }

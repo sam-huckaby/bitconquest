@@ -9,8 +9,9 @@ export async function middleware(request: NextRequest) {
     // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
     const { data: { session } } = await supabase.auth.getSession();
 
+    const requestedPage = request.nextUrl.pathname;
     if(!session) {
-      return NextResponse.redirect(`${origin}/login`);
+      return NextResponse.redirect(`${origin}/login?next=${encodeURIComponent(requestedPage)}`);
     }
 
     return response;

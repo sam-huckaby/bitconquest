@@ -1,18 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Divider, IconButton, Menu, MenuItem } from '@mui/material';
-import { User } from '@supabase/supabase-js';
-import { createClient } from '@/utils/supabase/client';
+import { Divider, IconButton, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useAuth } from './AuthContext';
 
-interface ProfileButtonProps {
-	user: User;
-};
-
-export default function ProfileButton({ user }: ProfileButtonProps) {
+export default function ProfileButton() {
 	const { push } = useRouter();
-	const supabase = createClient();
+	const { avatar, signOut, user } = useAuth();
+
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -23,15 +19,14 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 	};
 
 	const goToMyDomains = async () => {
-		const { data: { user } } = await supabase.auth.getUser();
 		push(`/u/${user?.user_metadata.preferred_username}`);
 		handleClose();
 	};
 
 	const logout = async () => {
-		await supabase.auth.signOut();
+		await signOut();
 		setAnchorEl(null);
-		push('/login');
+		push('/');
 	};
 
 	return (
@@ -42,7 +37,8 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 				aria-haspopup="true"
 				aria-expanded={open ? 'true' : undefined}
 				onClick={handleClick}>
-				<div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+				<img src={avatar} alt='Your profile picture' className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center"/ >
+					{/* TODO: Stash this pretty decent icon away somewhere
 					<svg
 						className=" text-gray-800"
 						fill="none"
@@ -58,7 +54,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 						<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
 						<circle cx="12" cy="7" r="4" />
 					</svg>
-				</div>
+					*/}
 			</IconButton>
 			<Menu
 				id="profile-menu"
@@ -70,7 +66,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
 				}}
 				className='pt-0'
 			>
-				<span className='font-bold px-4 pb-1 h-auto inline-block text-center'>{user.user_metadata.user_name}</span>
+				<span className='font-bold px-4 pb-1 h-auto inline-block text-center'>{user?.user_metadata.user_name}</span>
 				<Divider />
 				<MenuItem onClick={goToMyDomains}>My Domains</MenuItem>
 				<MenuItem onClick={logout}>Logout</MenuItem>
