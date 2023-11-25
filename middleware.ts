@@ -10,7 +10,13 @@ export async function middleware(request: NextRequest) {
     const { data: { session } } = await supabase.auth.getSession();
 
     const requestedPage = request.nextUrl.pathname;
-    if(!session) {
+
+    // User profile paths, we don't want to guard the OpenGraph routes
+    const usernameOpenGraphPattern = /\/u\/([a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38})\/opengraph-image$/;
+
+    const found = requestedPage.match(usernameOpenGraphPattern);
+
+    if(!session && !found) {
       return NextResponse.redirect(`${origin}/login?next=${encodeURIComponent(requestedPage)}`);
     }
 
