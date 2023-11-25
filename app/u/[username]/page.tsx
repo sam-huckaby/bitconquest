@@ -54,13 +54,16 @@ export default async function Profile({
   return (
     <main className="w-full flex flex-col items-center">
       <h1 className="mt-4 text-2xl font-bold sm:text-3xl md:text-4xl py-4">{isMyCollection ? "My domains" : `${username}'s domains`}</h1>
-      <div className='flex flex-col justify-center items-start'>
-        <span>Your personal verification code:</span>
-        <div className="relative p-0 pl-2 flex flex-row items-center justify-between bg-gray-300 dark:bg-gray-700 font-bold rounded mb-4">
-          <p className='text-sm'>{verifier}</p>
-          <CopyToClipboardButton className="dark:text-white" valueToCopy={verifier} />
+      {
+        isMyCollection &&
+        <div className='flex flex-col justify-center items-start'>
+          <span>Your personal verification code:</span>
+          <div className="relative p-0 pl-2 flex flex-row items-center justify-between bg-gray-300 dark:bg-gray-700 font-bold rounded mb-4">
+            <p className='text-sm'>{verifier}</p>
+            <CopyToClipboardButton className="dark:text-white" valueToCopy={verifier} />
+          </div>
         </div>
-      </div>
+      }
       {isMyCollection && <DomainAddButton verifier={verifier} />}
       <section className="flex flex-col py-4">
         <div className="w-full container flex flex-row flex-wrap gap-4 px-4 justify-center md:gap-8 md:px-6 lg:gap-10">
