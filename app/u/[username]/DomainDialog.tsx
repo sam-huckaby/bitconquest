@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material";
 import { CopyToClipboardButton } from '@/components/common/CopyToClipboardButton';
-import { VERIFICATION_BASE } from '@/utils/verification/constants';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { drawFromDomainName } from '@/utils/art';
 import { tldToColorScheme } from '@/utils/art/coordination';
 import { lookup } from '@/utils/verification/lookups';
+import { Autorenew as AutorenewIcon } from '@mui/icons-material';
 
 interface PropertyDialogProps {
   open: boolean;
@@ -22,6 +22,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
   const [showSure, setShowSure] = useState(false);
   const [showVeil, setShowVeil] = useState(false);
   const [flairImg, setFlairImg] = useState<string | undefined>();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const existingDomain = !!domain;
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -42,6 +43,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
   };
 
   const collectHandler = async () => {
+    setLoading(true);
     const [hostname, tld] = url.split('.');
 
     // Create an in-memory canvas so we can draw and store the flair in the DB
@@ -59,8 +61,10 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
     if (!error) {
       setShowVeil(true);
       canvasRef.current?.appendChild(flairCanvas);
+      setLoading(false);
       return;
     }
+    setLoading(false);
     handleError(error);
   };
 
@@ -100,6 +104,15 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
           <DialogTitle className='pb-0'>Collect New Domain</DialogTitle>
       }
       <DialogContent>
+        {
+          loading && 
+          <div className='absolute top-0 right-0 bottom-0 left-0 z-10
+                          flex flex-row justify-center items-center 
+                          bg-gradient-to-br from-slate-600/80 via-slate-800/80 to-slate-700/80 
+                          text-white'>
+            <AutorenewIcon className='text-6xl animate-[spin_2s_linear_infinite] duration-700'/>
+          </div>
+        }
         {
           showVeil && <>
             <div className="absolute flex flex-row justify-center items-center inset-0 z-20 bg-gray-800 duration-300" id="overlay" onClick={(event) => {

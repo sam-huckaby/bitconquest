@@ -41,7 +41,7 @@ export const DomainCard = ({ domain, flair, ownerView, score, tld, verified, ver
   return (
     <div id={`${domain}-${tld}`} className={`relative ${background} min-w-[350px] rounded-lg shadow-lg p-4 flex flex-col items-center`}>
       <span className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl flex items-center">
-        <VerifyMark hostname={domain} tld={tld} verified={verified} verifier={verifier} />
+        <VerifyMark hostname={domain} tld={tld} verified={verified} />
         {domain}<span className={`${text} ${badge} text-lg rounded-full ml-2 py-1 px-3 tracking-wide`}>.{tld}</span>
       </span>
       <div className={`h-1 w-16 ${separator} mt-2 mb-4`} />
