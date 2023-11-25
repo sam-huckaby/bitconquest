@@ -38,7 +38,7 @@ export default async function Image({ params: { username } }: { params: { userna
             </div>)
         }
         <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.8)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          <img src="http://localhost:3000//bitconquest-logo.png" alt='Bit Conquest Logo' height={200} width={200} style={{ marginLeft: '24px' }} />
+          <img src={`${process.env.NEXT_PUBLIC_ROOT_URL}/bitconquest-logo.png`} alt='Bit Conquest Logo' height={200} width={200} style={{ marginLeft: '24px' }} />
           <span style={{ color: 'white', fontWeight: 'bolder', fontSize: 128 }}>{username}</span>
         </div>
       </div>
