@@ -9,15 +9,17 @@ interface HomeProps {
 };
 
 export default async function Home({ searchParams }: HomeProps) {
+  // Server side Supabase client
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
+  // This must stay on the server side, because otherwise PKCE won't be configured
   if (searchParams.code && typeof searchParams.code === 'string') {
     supabase.auth.exchangeCodeForSession(searchParams.code);
   }
 
   // Use a stored function in Supabase to get the top ten domain holders / whales (same thing)
-  const { data: leaders, error } = await supabase.rpc('get_leaderboard');
+  const { data: leaders } = await supabase.rpc('get_leaderboard');
 
   return (
     <main className="flex min-h-full flex-col items-center justify-start pb-16">
@@ -34,7 +36,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
         <h2 className='text-2xl font-bold py-2'>Share with Friends, Impress Strangers</h2>
         <p>With Bit Conquest, sharing your domain collection becomes a social affair. Show off your digital prowess to friends, family, and yes, even those envious competitors. Let them marvel at your domain diversity and your uncanny knack for snagging cool URLs.</p>
-{/* TODO: Maybe put these back in once offers are available
+        {/* TODO: Maybe put these back in once offers are available?
         <h2 className='text-2xl font-bold py-2'>A Marketing Tool in Disguise</h2>
         <p>Think Bit Conquest is all fun and games? Think again! It's a powerful marketing tool, too. Showcase your domains in their best light, making them irresistible to potential buyers. It's like having a digital 'For Sale' sign that actually gets noticed!</p>
 

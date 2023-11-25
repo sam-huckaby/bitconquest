@@ -7,8 +7,20 @@ export const HomeHero = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-        const newHeight = Math.max(100, 318 - window.scrollY);
-        setHeroHeight(newHeight);
+    // Calculate the distance from the bottom of the page
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const bottomDistance = document.body.offsetHeight - scrollPosition;
+
+        // Set a threshold, e.g., 100 pixels or the height of your footer
+        const threshold = 100;
+
+        if (bottomDistance > threshold) {
+            const newHeight = Math.max(100, 318 - window.scrollY);
+            setHeroHeight(newHeight);
+        }
+
+        //const newHeight = Math.max(100, 318 - window.scrollY);
+        //setHeroHeight(newHeight);
     };
 
     window.addEventListener('scroll', handleScroll);

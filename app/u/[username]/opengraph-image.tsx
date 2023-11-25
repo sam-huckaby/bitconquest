@@ -12,8 +12,6 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image({ params: { username } }: { params: { username: string } }) {
-  //return await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/opengraph/${username}`);
-
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 

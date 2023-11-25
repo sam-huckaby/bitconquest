@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material";
 import { CopyToClipboardButton } from '@/components/common/CopyToClipboardButton';
-import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { drawFromDomainName } from '@/utils/art';
 import { tldToColorScheme } from '@/utils/art/coordination';
 import { lookup } from '@/utils/verification/lookups';
 import { Autorenew as AutorenewIcon } from '@mui/icons-material';
+import { useAuth } from '@/components/auth/AuthContext';
 
 interface PropertyDialogProps {
   open: boolean;
@@ -18,15 +18,15 @@ interface PropertyDialogProps {
 
 export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }: PropertyDialogProps) => {
   const { refresh } = useRouter();
-  const [url, setUrl] = useState(domain ?? '');
-  const [showSure, setShowSure] = useState(false);
-  const [showVeil, setShowVeil] = useState(false);
-  const [flairImg, setFlairImg] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>();
+  const [ url, setUrl ] = useState(domain ?? '');
+  const [ showSure, setShowSure ] = useState(false);
+  const [ showVeil, setShowVeil ] = useState(false);
+  const [ flairImg, setFlairImg ] = useState<string | undefined>();
+  const [ loading, setLoading ] = useState(false);
+  const [ error, setError ] = useState<string | undefined>();
   const existingDomain = !!domain;
   const canvasRef = useRef<HTMLDivElement>(null);
-  const supabase = createClient();
+  const { supabase } = useAuth();
 
   const closeHandler = () => {
     if (clear) setUrl('');
@@ -51,12 +51,12 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
     flairCanvas.width = 300;
     flairCanvas.height = 150;
     // This lookup is to populate the score, which isn't shown in this dialog, but needs to be populated when it closes
-    const { data, error: lookupError } = await lookup(hostname, tld, verifier); // This function returns an object with the score if needed here later
+    const { data } = await lookup(hostname.toLowerCase(), tld, verifier); // This function returns an object with the score if needed here later
 
-    const flair = drawFromDomainName(flairCanvas, hostname);
+    const flair = drawFromDomainName(flairCanvas, hostname.toLowerCase());
     setFlairImg(flair);
     const { error } = await supabase.from('domains').insert([
-      { hostname, tld, verifier, flair, score: data?.score, verified: data?.verified },
+      { hostname: hostname.toLowerCase(), tld: tld.toLowerCase(), verifier, flair, score: data?.score, verified: data?.verified },
     ]);
     if (!error) {
       setShowVeil(true);
@@ -76,7 +76,6 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
   };
 
   const deleteHandler = async () => {
-    const supabase = createClient();
     const [hostname, tld] = url.split('.');
     const { error } = await supabase.from('domains').delete().eq('hostname', hostname).eq('tld', tld);
     if (!error) {
@@ -100,7 +99,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
     }} maxWidth='xs' open={open} onKeyUp={(e) => (e.key === 'Enter' && isUrlValid) ? collectHandler() : true} onSubmit={collectHandler} disableRestoreFocus onClose={closeHandler}>
       {
         existingDomain ?
-          <DialogTitle className='pb-0'>{url}</DialogTitle> :
+          <DialogTitle className='pb-0 truncate' title={url}>{url}</DialogTitle> :
           <DialogTitle className='pb-0'>Collect New Domain</DialogTitle>
       }
       <DialogContent>
@@ -134,9 +133,10 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
             </div>
             <div className={`absolute flex flex-row justify-center items-center inset-0 z-10 bg-gray-500`}></div>
             <div className={`absolute flex flex-col justify-center items-center inset-0 z-10 ${background}`}>
-              <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl flex items-center">
-                {url.split('.')[0]}<span className={`${text} ${badge} text-lg rounded-full ml-2 py-1 px-3 tracking-wide`}>.{url.split('.')[1]}</span>
-              </h2>
+              <span className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl flex flex-row items-center w-full px-2">
+                <span className='truncate' title={url.split('.')[0]}>{url.split('.')[0]}</span>
+                <span className={`${text} ${badge} text-lg rounded-full ml-2 py-1 px-3 tracking-wide`}>.{url.split('.')[1]}</span>
+              </span>
               <div className={`h-1 w-16 ${separator} mt-2 mb-4`} />
               <img className='h-[150px] w-[300px]' src={flairImg} alt={`Flair for ${url}`} />
               <div className={`h-1 w-16 ${separator} mt-2 mb-4`} />

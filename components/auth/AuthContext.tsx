@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 
 interface AuthContextProps {
   supabase: SupabaseClient;
-  user: User | null;
+  user?: User;
   avatar: string | undefined;
   signOut: () => Promise<void>;
 }
@@ -18,14 +18,15 @@ export const AuthProvider = ({ children }: {
 }): React.ReactNode => {
   const supabase = createClient();
   const [client] = useState<SupabaseClient>(supabase);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | undefined>(undefined);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data } = await client.auth.getUser();
-      setUser(data.user);
-      setAvatar(data.user?.user_metadata.avatar_url);
+      const { data: { session } } = await client.auth.getSession();
+      const user = session?.user;
+      setUser(user);
+      setAvatar(user?.user_metadata.avatar_url);
     };
 
     fetchUser();
@@ -33,12 +34,13 @@ export const AuthProvider = ({ children }: {
 
   const signOut = async () => {
     await client.auth.signOut();
-    setUser(null);
+    setUser(undefined);
+    setAvatar(undefined);
   };
 
   return <AuthContext.Provider value={{ supabase: client, user, avatar, signOut }}>
-      {children}
-    </AuthContext.Provider>;
+    {children}
+  </AuthContext.Provider>;
 };
 
 export const useAuth = () => {

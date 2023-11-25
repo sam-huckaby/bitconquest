@@ -12,6 +12,7 @@ export default function Login() {
   const nextRoute = searchParams.get('next') ?? '/';
 
   const signInWithGithub = async () => {
+    console.log("SIGN IN WITH GITHUB");
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
@@ -19,7 +20,6 @@ export default function Login() {
       },
     });
   }
-
 
   return (
     <main className="absolute z-10 top-0 right-0 bottom-0 left-0 flex min-h-full flex-col items-center justify-center p-24 bottom-background">
