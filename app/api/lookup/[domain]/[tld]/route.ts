@@ -30,8 +30,8 @@ export async function GET(
             // No logging here because it will be hit a lot
         }
         let validated = false;
-        for (let i = 0; i < txtRecords.length; i++) {
-            if (txtRecords[i][0][0] === validationKey) {
+        for (let i = 0; i < txtRecords[0].length; i++) {
+            if (txtRecords[0][i][0] === validationKey) {
                 validated = true;
                 break;
             }
