@@ -31,7 +31,7 @@ export default async function Home({ searchParams }: HomeProps) {
       <div className='w-full px-8 sm:px-24 pt-4 border-t border-solid border-gray-500 bottom-background flex flex-col'>
         <h1 className="text-4xl font-bold text-center pb-2">Discover Your Domain Dynasty!</h1>
         <div className='w-full flex flex-row justify-center items-center'>
-          <Link href={`/login?${session ? 'next='+username : 'signup=true'}`} className='w-6/12 min-w-[300px] rounded my-4 p-4 bg-gray-700 hover:bg-gray-800 text-neutral-200 text-2xl flex flex-row justify-center items-center'>
+          <Link href={`${session ? '/u/'+username : '/login?signup=true'}`} className='w-6/12 min-w-[300px] rounded my-4 p-4 bg-gray-700 hover:bg-gray-800 text-neutral-200 text-2xl flex flex-row justify-center items-center'>
           {session ? 'Go to my collection' : 'Start collecting!'}
           </Link>
         </div>
