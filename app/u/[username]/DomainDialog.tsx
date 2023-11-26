@@ -133,7 +133,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
             </div>
             <div className={`absolute flex flex-row justify-center items-center inset-0 z-10 bg-gray-500`}></div>
             <div className={`absolute flex flex-col justify-center items-center inset-0 z-10 ${background}`}>
-              <span className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl flex flex-row items-center w-full px-2">
+              <span className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl flex flex-row items-center justify-center w-full px-2">
                 <span className='truncate' title={url.split('.')[0]}>{url.split('.')[0]}</span>
                 <span className={`${text} ${badge} text-lg rounded-full ml-2 py-1 px-3 tracking-wide`}>.{url.split('.')[1]}</span>
               </span>

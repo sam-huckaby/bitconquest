@@ -34,7 +34,7 @@ const charToShape: Record<string, string> = {
 const drawCircle = (ctx: CanvasRenderingContext2D, x: number, y: number, color: string) => {
 	ctx.fillStyle = color;
 	ctx.beginPath();
-	ctx.arc(x, y, 40, 0, Math.PI * 2);
+	ctx.arc(x, y, 80, 0, Math.PI * 2);
 	ctx.fill();
 }
 
@@ -42,7 +42,7 @@ const drawCircle = (ctx: CanvasRenderingContext2D, x: number, y: number, color: 
 const drawSquare = (ctx: CanvasRenderingContext2D, x: number, y: number, color: string) => {
 	ctx.fillStyle = color;
 	ctx.beginPath();
-	ctx.rect(x - 20, y - 20, 40, 40);
+	ctx.rect(x - 80, y - 80, 160, 160);
 	ctx.fill();
 }
 
@@ -50,10 +50,10 @@ const drawSquare = (ctx: CanvasRenderingContext2D, x: number, y: number, color: 
 const drawDiamond = (ctx: CanvasRenderingContext2D, x: number, y: number, color: string) => {
 	ctx.fillStyle = color;
 	ctx.beginPath();
-	ctx.moveTo(x, y - 40); // Top point
-	ctx.lineTo(x + 40, y); // Right point
-	ctx.lineTo(x, y + 40); // Bottom point
-	ctx.lineTo(x - 40, y); // Left point
+	ctx.moveTo(x, y - 80); // Top point
+	ctx.lineTo(x + 80, y); // Right point
+	ctx.lineTo(x, y + 80); // Bottom point
+	ctx.lineTo(x - 80, y); // Left point
 	ctx.closePath();
 	ctx.fill();
 }
