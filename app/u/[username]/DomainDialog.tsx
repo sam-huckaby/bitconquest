@@ -18,12 +18,12 @@ interface PropertyDialogProps {
 
 export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }: PropertyDialogProps) => {
   const { refresh } = useRouter();
-  const [ url, setUrl ] = useState(domain ?? '');
-  const [ showSure, setShowSure ] = useState(false);
-  const [ showVeil, setShowVeil ] = useState(false);
-  const [ flairImg, setFlairImg ] = useState<string | undefined>();
-  const [ loading, setLoading ] = useState(false);
-  const [ error, setError ] = useState<string | undefined>();
+  const [url, setUrl] = useState(domain ?? '');
+  const [showSure, setShowSure] = useState(false);
+  const [showVeil, setShowVeil] = useState(false);
+  const [flairImg, setFlairImg] = useState<string | undefined>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>();
   const existingDomain = !!domain;
   const canvasRef = useRef<HTMLDivElement>(null);
   const { supabase } = useAuth();
@@ -104,12 +104,12 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
       }
       <DialogContent>
         {
-          loading && 
+          loading &&
           <div className='absolute top-0 right-0 bottom-0 left-0 z-10
                           flex flex-row justify-center items-center 
                           bg-gradient-to-br from-slate-600/80 via-slate-800/80 to-slate-700/80 
                           text-white'>
-            <AutorenewIcon className='text-6xl animate-[spin_2s_linear_infinite] duration-700'/>
+            <AutorenewIcon className='text-6xl animate-[spin_2s_linear_infinite] duration-700' />
           </div>
         }
         {
@@ -169,7 +169,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
           <>
             <DialogContentText className='mt-4'>
               To showcase your domain on your profile, you just need to add your personal verification code
-              to your domain&apos;s DNS via a TXT record.
+              to your domain&apos;s DNS via a TXT record (use <span className='font-mono px-1 bg-gray-300'>@</span> as the host value).
             </DialogContentText>
             <DialogContentText className='mb-4'>
               This quick step confirms your ownership and gets your
