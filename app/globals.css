@@ -101,5 +101,5 @@ body {
 }
 
 .attention-shake {
-  animation: horizontal-shaking 5s infinite;
+  animation: horizontal-shaking 5s linear;
 }
