@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   // if "next" is in param, use it as the redirect URL
   const next = searchParams.get('next') ?? '/'
+  const isSignup = (searchParams.get('signup') ?? false) == 'true';
 
   if (code) {
     const cookieStore = cookies();
@@ -44,6 +45,11 @@ export async function GET(request: Request) {
     // original goal, which was to create the cool domain showcase.
 
     if (!tokenError && !insertError) {
+      if (isSignup) {
+        const username = user?.user_metadata.preferred_username;
+        return NextResponse.redirect(`${origin}/u/${username}`);
+      }
+
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

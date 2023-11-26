@@ -10,13 +10,15 @@ export default function Login() {
   const searchParams = useSearchParams()
  
   const nextRoute = searchParams.get('next') ?? '/';
+  const isSignup = (searchParams.get('signup') ?? false) === 'true';
 
   const signInWithGithub = async () => {
-    console.log("SIGN IN WITH GITHUB");
+    const redirectTo = isSignup ? `${process.env.NEXT_PUBLIC_ROOT_URL}/auth/callback?signup=true` : `${process.env.NEXT_PUBLIC_ROOT_URL}/auth/callback?next=${encodeURIComponent(nextRoute)}`;
+
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_ROOT_URL}/auth/callback?next=${encodeURIComponent(nextRoute)}`,
+        redirectTo,
       },
     });
   }
