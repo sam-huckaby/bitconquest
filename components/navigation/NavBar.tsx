@@ -27,7 +27,7 @@ export const NavBar = () => {
     { Icon: Beenhere, label: "Reliability", href: `/dashboard/reliability` },
   ];
 
-  const showStyles = mode === "hidden" ? "hidden" : mode === "icon" ? "hidden sm:flex sm:flex-col w-[96px]" : "hidden sm:flex sm:flex-col w-[200px]";
+  const showStyles = mode === "hidden" ? "hidden" : mode === "icon" ? "hidden sm:flex sm:flex-col w-[100px]" : "hidden sm:flex sm:flex-col w-[200px]";
 
   return (
     <div className={`${showStyles} justify-between bg-gray-300 shadow-lg dark:bg-gray-800`}>
@@ -36,7 +36,7 @@ export const NavBar = () => {
         menuItems.map(({ Icon, label, href }) => (
           <Link className={`
             relative flex flex-row justify-start items-center 
-            pl-8 h-16 
+            pl-6 h-16 border-l-solid border-l-4 border-l-red-500
             hover:bg-gray-400 dark:hover:bg-gray-700 
             border-b border-b-gray-400/50 dark:border-b-gray-900/75`}
             key={href} href={href}>
