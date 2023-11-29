@@ -20,7 +20,7 @@ export const NavProvider = ({ children }: {
   children: React.ReactNode
 }): React.ReactNode => {
   const [topMode, setTopMode] = useState<TopNavMode>("full");
-  const [sideMode, setSideMode] = useState<SideNavMode>("full");
+  const [sideMode, setSideMode] = useState<SideNavMode>("icon");
 	const [showAuthButton, setShowAuthButton] = useState<boolean>(true);
 
   return <NavContext.Provider value={{ topMode, setTopMode, sideMode, setSideMode, showAuthButton, setShowAuthButton }}>

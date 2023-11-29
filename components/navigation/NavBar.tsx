@@ -7,26 +7,45 @@ import styles from './styles.module.css';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useNav } from './NavContext';
+import { Beenhere, EmojiObjects, TableChart } from '@mui/icons-material';
+
+export interface NavItem {
+  Icon: React.ReactNode;
+  label: string;
+  href: string;
+};
 
 export const NavBar = () => {
-  const { sideMode } = useNav();
+  const { sideMode: mode } = useNav();
   const theme = useTheme();
   // If the screen is smaller than medium (aka 900px)
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
 
   const menuItems = [
-    { label: "Dashboard", href: `/dashboard` },
-    { label: "Intelligence", href: `/dashboard/intelligence` },
-    { label: "Reliability", href: `/dashboard/reliability` },
+    { Icon: TableChart, label: "Dashboard", href: `/dashboard` },
+    { Icon: EmojiObjects, label: "Intelligence", href: `/dashboard/intelligence` },
+    { Icon: Beenhere, label: "Reliability", href: `/dashboard/reliability` },
   ];
 
-  const showStyles = sideMode === "hidden" ? "hidden" : sideMode === "icon" ? "hidden sm:flex sm:flex-col w-[75px]" : "hidden sm:flex sm:flex-col w-[250px]";
+  const showStyles = mode === "hidden" ? "hidden" : mode === "icon" ? "hidden sm:flex sm:flex-col w-[96px]" : "hidden sm:flex sm:flex-col w-[200px]";
 
   return (
-    <div className={`${showStyles} bg-gray-300 shadow-lg dark:bg-gray-800`}>
+    <div className={`${showStyles} justify-between bg-gray-300 shadow-lg dark:bg-gray-800`}>
+      <div className='flex flex-col'>
       {
-        menuItems.map(({ label, href }) => <Link className={`relative flex flex-row justify-center items-center h-16 hover:bg-gray-400 dark:hover:bg-gray-700 border-b border-b-gray-400/50 dark:border-b-gray-900/75`} key={href} href={href}>{label}</Link>)
+        menuItems.map(({ Icon, label, href }) => (
+          <Link className={`
+            relative flex flex-row justify-start items-center 
+            pl-8 h-16 
+            hover:bg-gray-400 dark:hover:bg-gray-700 
+            border-b border-b-gray-400/50 dark:border-b-gray-900/75`}
+            key={href} href={href}>
+            {<Icon className='h-[32px] w-[32px]' />}
+            { (mode === 'full' && !isSmall) && <span className='ml-2'>{label}</span> }
+          </Link>
+        ))
       }
+      </div>
     </div>
   );
 };

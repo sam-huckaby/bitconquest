@@ -3,10 +3,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { SupabaseClient, User } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
+import { VERIFICATION_BASE } from '@/utils/verification/constants';
 
 interface AuthContextProps {
   supabase: SupabaseClient;
   user?: User;
+  verifier: string;
   avatar: string | undefined;
   signOut: () => Promise<void>;
 }
@@ -20,6 +22,7 @@ export const AuthProvider = ({ children }: {
   const [client] = useState<SupabaseClient>(supabase);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  const [verifier, setVerifier] = useState<string>('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -27,6 +30,7 @@ export const AuthProvider = ({ children }: {
       const user = session?.user;
       setUser(user);
       setAvatar(user?.user_metadata.avatar_url);
+      setVerifier(`${VERIFICATION_BASE}${user?.id}`);
     };
 
     fetchUser();
@@ -38,7 +42,7 @@ export const AuthProvider = ({ children }: {
     setAvatar(undefined);
   };
 
-  return <AuthContext.Provider value={{ supabase: client, user, avatar, signOut }}>
+  return <AuthContext.Provider value={{ supabase: client, user, avatar, signOut, verifier }}>
     {children}
   </AuthContext.Provider>;
 };

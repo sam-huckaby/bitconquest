@@ -12,7 +12,7 @@ export const AuthButton = () => {
     <ProfileButton />
   ) : (
     <Button
-      href="/login?signup=true"
+      href="/login?next=dashboard"
       className="py-2 px-4 flex flex-row justify-center items-center rounded-md no-underline text-white hover:bg-gray-800/50"
     >
       Login<LoginIcon />

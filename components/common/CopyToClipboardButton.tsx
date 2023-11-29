@@ -23,6 +23,7 @@ export const CopyToClipboardButton = ({ valueToCopy, ...props }: CopyToClipboard
   }, [open]);
 
   const copyToClipboard = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // NOTE: navigator.clipboard DOES NOT WORK on local, if proxying bitconquest.com:80
     navigator.clipboard.writeText(valueToCopy)
       .then(() => {
         // You can add more functionality here to provide feedback to the user

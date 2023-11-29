@@ -28,7 +28,7 @@ export default async function Home({ searchParams }: HomeProps) {
   return (
     <main className="flex min-h-full flex-col items-center justify-start pb-16">
       <HomeHero />
-      <div className='w-full px-8 sm:px-24 pt-4 border-t border-solid border-gray-500 bottom-background flex flex-col'>
+      <div className='w-full px-8 sm:px-24 pt-4 pb-4 border-t border-solid border-gray-500 bottom-background flex flex-col'>
         <h1 className="text-4xl font-bold text-center pb-2">Discover Your Domain Dynasty!</h1>
         <div className='w-full flex flex-row justify-center items-center'>
           <Link href={`${session ? '/u/'+username : '/login?signup=true'}`} className='w-6/12 min-w-[300px] rounded my-4 p-4 bg-gray-700 hover:bg-gray-800 text-neutral-200 text-2xl flex flex-row justify-center items-center'>
@@ -56,7 +56,7 @@ export default async function Home({ searchParams }: HomeProps) {
         <p>Don't let your domains languish in obscurity. Bring them into the limelight with Bit Conquest. Start showcasing, sharing, and selling like a pro. Sign up today, and let the conquest begin!</p>
 */}
       </div>
-      <div className='w-full px-8 sm:px-24 mt-4 pt-4 border-t border-solid border-gray-500 bottom-background'>
+      <div className='w-full px-8 sm:px-24 pt-4 border-t border-solid border-gray-500 bottom-background'>
         <div id='leaderboard' className="my-4 grid text-center w-full">
           <h2 className='text-3xl bold font-mono'>Current Leaderboard</h2>
         </div>

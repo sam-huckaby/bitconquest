@@ -21,12 +21,14 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} max-h-[calc(100dvh)] h-[calc(100dvh)]`}>
+      <body className={`${inter.className} flex flex-col max-h-[calc(100dvh)] h-[calc(100dvh)]`}>
         <StyledEngineProvider injectFirst>
           <AuthProvider>
             <NavProvider>
               <NavHeader />
-              { children }
+              <div className='overflow-auto'>
+                {children}
+              </div>
             </NavProvider>
           </AuthProvider>
         </StyledEngineProvider>

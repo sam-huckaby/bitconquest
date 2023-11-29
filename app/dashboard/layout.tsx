@@ -9,7 +9,7 @@ export default async function Layout({
   return (
     <div className="flex flex-row h-[calc(100dvh-72px)] overflow-hidden">
       <NavBar />
-      <div className='h-full max-h-full p-8 overflow-scroll'>
+      <div className='w-full h-full max-h-full p-8 overflow-scroll'>
         {children}
       </div>
     </div>
