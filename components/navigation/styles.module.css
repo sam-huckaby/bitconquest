@@ -1,0 +1,11 @@
+.triangle {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 32px 60px 32px 0;
+            border-color: transparent #ffffff transparent transparent; /* Adjust the color as needed */
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+}

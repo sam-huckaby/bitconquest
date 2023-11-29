@@ -1,14 +1,22 @@
 'use client';
 
+import { useNav } from '@/components/navigation/NavContext';
 import { createClient } from '@/utils/supabase/client';
 import { GitHub as GitHubIcon } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Login() {
+  const { setShowAuthButton } = useNav();
+
   const supabase = createClient();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
  
+  useEffect(() => {
+    setShowAuthButton(false);
+  }, []);
+
   const nextRoute = searchParams.get('next') ?? '/';
   const isSignup = (searchParams.get('signup') ?? false) === 'true';
 
@@ -24,7 +32,7 @@ export default function Login() {
   }
 
   return (
-    <main className="absolute z-10 top-0 right-0 bottom-0 left-0 flex min-h-full flex-col items-center justify-center p-24 bottom-background">
+    <main className="flex min-h-full flex-col items-center justify-center p-24 bottom-background">
       <img src='/bitconquest-logo.png' alt='Bit Conquest Logo' width={100} height={100} />
       <p className='p-4 font-mono'>Login however you want, as long as it&apos;s with GitHub</p>
       <Button className='bg-gray-900 text-white hover:bg-gray-700 dark:border-white dark:border dark:border-solid' onClick={signInWithGithub}>

@@ -18,8 +18,8 @@ export default function ProfileButton() {
 		setAnchorEl(null);
 	};
 
-	const goToMyDomains = async () => {
-		push(`/u/${user?.user_metadata.preferred_username}`);
+	const goToDashboard = async () => {
+		push(`/dashboard`);
 		handleClose();
 	};
 
@@ -49,10 +49,10 @@ export default function ProfileButton() {
 				}}
 				className='pt-0'
 			>
-				<span className='font-bold px-4 pb-1 h-auto inline-block text-center'>{user?.user_metadata.user_name}</span>
+				<span className='flex flex-row justify-center items-center font-bold px-4 pb-1 h-auto text-center'>{user?.user_metadata.user_name}</span>
 				<Divider />
-				<MenuItem onClick={goToMyDomains}>My Domains</MenuItem>
-				<MenuItem onClick={logout}>Logout</MenuItem>
+				<MenuItem className='flex flex-row justify-start items-center pt-2' onClick={goToDashboard}>Dashboard</MenuItem>
+				<MenuItem className='flex flex-row justify-start items-center' onClick={logout}>Logout</MenuItem>
 			</Menu>
 		</>
 	);
