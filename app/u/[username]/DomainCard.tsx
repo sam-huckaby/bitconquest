@@ -1,9 +1,6 @@
 'use client';
 
-import { Receipt as ReceiptIcon } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
-import { DomainDialog } from "./DomainDialog";
 import { tldToColorScheme } from "@/utils/art/coordination";
 import { VerifyMark } from "@/components/domain/VerifyMark";
 import { useAuth } from "@/components/auth/AuthContext";
@@ -52,12 +49,6 @@ export const DomainCard = ({ domain, flair, ownerView, score, tld, verified, ver
       <img className="w-[300px] h-[150px]" src={flair} alt={`Flair for ${domain}.${tld}`} />
       <div className={`h-1 w-16 ${separator} mt-2 mb-4`} />
       <p className="mt-4 font-bold text-zinc-500 md:text-lg lg:text-base xl:text-lg dark:text-zinc-300">Score: {score}</p>
-      {
-        ownerView && <>
-          <IconButton className="bg-black/25 absolute bottom-0 right-0 rounded-none rounded-br p-4 text-white" onClick={() => setEditOpen(true)}><ReceiptIcon /></IconButton>
-          <DomainDialog open={editOpen} onClose={() => setEditOpen(false)} domain={`${domain}.${tld}`} verifier={verifier} />
-        </>
-      }
     </div>
   );
 }

@@ -2,9 +2,6 @@
 import { DomainCard } from './DomainCard';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
-import { DomainAddButton } from './DomainAddButton';
-import { CopyToClipboardButton } from '@/components/common/CopyToClipboardButton';
-import { VERIFICATION_BASE } from '@/utils/verification/constants';
 
 interface ProfileProps {
   params: { username: string }
@@ -23,7 +20,6 @@ export default async function Profile({
   const { data: { user } } = await supabase.auth.getUser();
   const { username } = params;
   const isMyCollection = username === user?.user_metadata.preferred_username;
-  const verifier = `${VERIFICATION_BASE}${user?.id}`;
 
   // Retrieve all domains associated with the current page's username
   let domainQuery = supabase
@@ -53,18 +49,7 @@ export default async function Profile({
 
   return (
     <main className="w-full flex flex-col items-center">
-      <h1 className="mt-4 text-2xl font-bold sm:text-3xl md:text-4xl py-4">{isMyCollection ? "My domains" : `${username}'s domains`}</h1>
-      {
-        isMyCollection &&
-        <div className='flex flex-col justify-center items-start'>
-          <span>Your personal verification code:</span>
-          <div className="relative p-0 pl-2 flex flex-row items-center justify-between bg-gray-300 dark:bg-gray-700 font-bold rounded mb-4">
-            <p className='text-sm'>{verifier}</p>
-            <CopyToClipboardButton className="dark:text-white" valueToCopy={verifier} />
-          </div>
-        </div>
-      }
-      {isMyCollection && <DomainAddButton verifier={verifier} />}
+      <h1 className="mt-4 text-2xl font-bold sm:text-3xl md:text-4xl py-4">{`${username}'s domains`}</h1>
       <section className="flex flex-col py-4">
         <div className="w-full container flex flex-row flex-wrap gap-4 px-4 justify-center md:gap-8 md:px-6 lg:gap-10">
           {!hasDomains && <><div></div><div className="p-24 w-full flex flex-row justify-center items-center text-gray-500/50"><p>Well, this is awkward</p></div></>}

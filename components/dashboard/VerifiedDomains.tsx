@@ -5,13 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { useAuth } from '../auth/AuthContext';
-import { createClient } from '@/utils/supabase/client';
 import { DNSHelpDialog } from './DNSHelpDialog';
 
 export const VerifiedDomains = () => {
 	ChartJS.register(ArcElement, Tooltip, Legend);
-	const { user } = useAuth();
-	const supabase = createClient();
+	const { user, supabase } = useAuth();
 
 	const [loading, setLoading] = useState(true);
 	const [domains, setDomains] = useState([0, 0]);
@@ -52,7 +50,7 @@ export const VerifiedDomains = () => {
 		};
 
 		user?.id && getDomains();
-	}, [user]);
+	}, [user, supabase]);
 
 	const data = {
 		labels: [

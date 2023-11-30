@@ -7,18 +7,17 @@ import { tldToColorScheme } from '@/utils/art/coordination';
 import { lookup } from '@/utils/verification/lookups';
 import { Autorenew as AutorenewIcon } from '@mui/icons-material';
 import { useAuth } from '@/components/auth/AuthContext';
+import { useDomainDialog } from './DomainDialogContext';
 
 interface PropertyDialogProps {
-  open: boolean;
-  verifier: string;
-  domain?: string;
   clear?: boolean; // If the dialog should clear out on close (for shared dialogs)
-  onClose: () => void;
 };
 
-export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }: PropertyDialogProps) => {
+export const DomainDialog = ({ clear = false }: PropertyDialogProps) => {
   const { refresh } = useRouter();
-  const [url, setUrl] = useState(domain ?? '');
+  const { open, closeDomainEditor: onClose, selectedDomain: domain } = useDomainDialog();
+console.log(domain);
+  const [url, setUrl] = useState(domain ? `${domain?.hostname}.${domain?.tld}` : '');
   const [showSure, setShowSure] = useState(false);
   const [showVeil, setShowVeil] = useState(false);
   const [flairImg, setFlairImg] = useState<string | undefined>();
@@ -26,7 +25,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
   const [error, setError] = useState<string | undefined>();
   const existingDomain = !!domain;
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { supabase } = useAuth();
+  const { supabase, verifier } = useAuth();
 
   const closeHandler = () => {
     if (clear) setUrl('');
@@ -76,10 +75,8 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
   };
 
   const deleteHandler = async () => {
-    const [hostname, tld] = url.split('.');
-    const { error } = await supabase.from('domains').delete().eq('hostname', hostname).eq('tld', tld);
+    const { error } = await supabase.from('domains').delete().eq('hostname', domain?.hostname).eq('tld', domain?.tld);
     if (!error) {
-      if (clear) setUrl('');
       onClose();
       refresh();
       return;
@@ -99,7 +96,7 @@ export const DomainDialog = ({ open, verifier, domain, clear = false, onClose }:
     }} maxWidth='xs' open={open} onKeyUp={(e) => (e.key === 'Enter' && isUrlValid) ? collectHandler() : true} onSubmit={collectHandler} disableRestoreFocus onClose={closeHandler}>
       {
         existingDomain ?
-          <DialogTitle className='pb-0 truncate' title={url}>{url}</DialogTitle> :
+          <DialogTitle className='pb-0 truncate' title={`${domain.hostname}.${domain.tld}`}>{`${domain.hostname}.${domain.tld}`}</DialogTitle> :
           <DialogTitle className='pb-0'>Collect New Domain</DialogTitle>
       }
       <DialogContent>

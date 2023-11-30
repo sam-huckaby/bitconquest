@@ -23,7 +23,6 @@ export default async function Home({ searchParams }: HomeProps) {
   const { data: leaders } = await supabase.rpc('get_leaderboard');
 
   const { data: { session } } = await supabase.auth.getSession();
-  const username = session?.user.user_metadata.preferred_username;
 
   return (
     <main className="flex min-h-full flex-col items-center justify-start pb-16">
@@ -31,8 +30,8 @@ export default async function Home({ searchParams }: HomeProps) {
       <div className='w-full px-8 sm:px-24 pt-4 pb-4 border-t border-solid border-gray-500 bottom-background flex flex-col'>
         <h1 className="text-4xl font-bold text-center pb-2">Discover Your Domain Dynasty!</h1>
         <div className='w-full flex flex-row justify-center items-center'>
-          <Link href={`${session ? '/u/'+username : '/login?signup=true'}`} className='w-6/12 min-w-[300px] rounded my-4 p-4 bg-gray-700 hover:bg-gray-800 text-neutral-200 text-2xl flex flex-row justify-center items-center'>
-          {session ? 'Go to my collection' : 'Start collecting!'}
+          <Link href={`${session ? '/dashboard' : '/login?signup=true'}`} className='w-6/12 min-w-[300px] rounded my-4 p-4 bg-gray-700 hover:bg-gray-800 text-neutral-200 text-2xl flex flex-row justify-center items-center'>
+          {session ? 'Go to my dashboard' : 'Start collecting!'}
           </Link>
         </div>
         <p className='relative'>Are you a domain collector, hoarding URLs like they&apos;re going out of style? Do you have a graveyard of unused domains gathering virtual dust? Or maybe, you&apos;re the savvy domain investor, waiting for the right moment to unleash your web real estate onto the world? Whatever your style, it&apos;s time to step into the spotlight with Bit Conquest, the app where domains get their day!</p>
